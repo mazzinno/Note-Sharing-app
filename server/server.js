@@ -18,6 +18,8 @@ mongoose.connect(process.env.MONGODB_URI)
   });
 
 // Define routes here
+app.use('/api/note', require('./Routes/Notes'));
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
