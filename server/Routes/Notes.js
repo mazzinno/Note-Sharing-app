@@ -30,4 +30,28 @@ router.post('/addnote', async (req, res) => {
   }
 });
 
+// Update a note
+router.patch('/:id', async (req, res) => {
+  try {
+    const updatedNote = await Note.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.json(updatedNote);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Delete a note
+router.delete('/:id', async (req, res) => {
+  try {
+    await Note.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Note deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

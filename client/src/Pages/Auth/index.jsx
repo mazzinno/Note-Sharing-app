@@ -3,20 +3,13 @@ import {
     SignedOut,
     SignInButton,
     SignUpButton,
-    UserButton,
 } from "@clerk/clerk-react";
+import { Navigate } from "react-router-dom";
 
 const Auth = () => {
     return (
       <div>
-        <SignedOut>
-          <SignUpButton mode="modal"/>
-          <SignInButton mode="modal"/>
-        </SignedOut>
-
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+          <h1> Welcome to Your Own Personal Finance Tracker!</h1>
       </div>
     );
 };

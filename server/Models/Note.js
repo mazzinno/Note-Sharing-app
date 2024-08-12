@@ -17,7 +17,11 @@ const NoteSchema = new mongoose.Schema({
     date: {
       type: Date,
       default: Date.now
-    }
+    },
+    sharedWith: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }]
   });
 
 module.exports = mongoose.model('Note', NoteSchema);
