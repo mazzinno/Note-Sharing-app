@@ -88,8 +88,32 @@ export const NoteProvider = ({ children }) => {
     }
   };
 
+  const shareNote = async (noteId, email) => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/note/${noteId}/share`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to share note');
+    }
+    const data = await response.json();
+    // Update the notes state if necessary
+    setNotes(notes.map(note => 
+      note._id === noteId ? { ...note, sharedWith: [...note.sharedWith, email] } : note
+    ));
+    return data;
+  } catch (error) {
+    console.error('Error sharing note:', error);
+    throw error;
+  }
+};
+
   return (
-    <NoteContext.Provider value={{ notes, addNote, updateNote, deleteNote, fetchNotes }}>
+    <NoteContext.Provider value={{ notes, addNote, updateNote, deleteNote, fetchNotes, shareNote }}>
       {children}
     </NoteContext.Provider>
   );

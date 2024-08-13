@@ -43,7 +43,7 @@ const AddingNote = () => {
             className="input"
             value={title}
             onChange={(e) => setTitle(e.target.value.slice(0, 60))}
-            maxLength={60}
+            maxLength={30}
           />
         </Form.Group>
         <Form.Group className="form-field" controlId="noteContent">
@@ -54,8 +54,8 @@ const AddingNote = () => {
             className="input"
             value={content}
             onChange={(e) => setContent(e.target.value.slice(0, 500))}
-            maxLength={400}
-            rows={4}
+            maxLength={120}
+            rows={3}
           />
         </Form.Group>
         <Button type="submit" className="button">

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNotes } from '../../context/Notes-contexts';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPencilAlt, FaStar } from 'react-icons/fa';
 
 const NoteList = () => {
-  const { notes, fetchNotes, deleteNote } = useNotes();
+  const { notes, fetchNotes, deleteNote, shareNote } = useNotes();
   const [colors, setColors] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [shareEmail, setShareEmail] = useState('');
 
   useEffect(() => {
     fetchNotes();
@@ -34,6 +37,28 @@ const NoteList = () => {
     return text.substring(0, maxLength - 3) + '...';
   };
 
+  const handleShareClick = (noteId) => {
+    setSelectedNoteId(noteId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedNoteId(null);
+    setShareEmail('');
+  };
+
+  const handleShareSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await shareNote(selectedNoteId, shareEmail);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error sharing note:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
+
   return (
     <Container fluid className="mt-4">
       <h2 className="text-center mb-4">Notes</h2>
@@ -50,7 +75,7 @@ const NoteList = () => {
                   backgroundColor: colors[index], 
                   border: 'none', 
                   borderRadius: '10px',
-                  height: '200px',
+                  height: '240px',
                   overflow: 'hidden'
                 }}
               >
@@ -63,7 +88,7 @@ const NoteList = () => {
                     <small>{new Date(note.date).toLocaleDateString()}</small>
                     <div>
                       {note.isImportant && <FaStar className="me-2" />}
-                      <Button variant="link" className="p-0 me-2">
+                      <Button variant="link" className="p-0 me-2" onClick={() => handleShareClick(note._id)}>
                         <FaPencilAlt />
                       </Button>
                       <Button variant="link" className="p-0" onClick={() => handleDelete(note._id)}>
@@ -77,6 +102,29 @@ const NoteList = () => {
           ))
         )}
       </Row>
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Share Note</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleShareSubmit}>
+            <Form.Group controlId="shareEmail">
+              <Form.Label>Enter the email address of the user you want to share the note with:</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="user@example.com"
+                value={shareEmail}
+                onChange={(e) => setShareEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="mt-3">
+              Share
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

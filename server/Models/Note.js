@@ -19,8 +19,7 @@ const NoteSchema = new mongoose.Schema({
       default: Date.now
     },
     sharedWith: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      type: String, // Change this to String to store email addresses
     }]
   });
 
