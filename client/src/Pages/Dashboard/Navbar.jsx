@@ -13,6 +13,7 @@ function CustomNavbar() {
           <Nav className="mx-auto">
             <Nav.Link as={Link} to="/add">Add</Nav.Link>
             <Nav.Link as={Link} to="/notes">Notes</Nav.Link>
+            <Nav.Link as={Link} to="/shared">Shared with Me</Nav.Link>
           </Nav>
           <Nav>
             <SignedOut>

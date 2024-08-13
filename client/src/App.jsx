@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { SignedIn, UserButton } from "@clerk/clerk-react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Auth from './Pages/Auth/index.jsx';
 import { NoteProvider } from "./context/Notes-contexts.jsx";
@@ -9,6 +8,7 @@ import AddingNote from "./Pages/Dashboard/AddingNote.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import HomePage from "./Pages/Dashboard/Home.jsx";
 import CustomNavbar from "./Pages/Dashboard/Navbar.jsx";
+import SharedWithMe from "./Pages/Dashboard/SharedWithMe.jsx";
 
 const App = () => {
   return (
@@ -24,6 +24,7 @@ const App = () => {
                 <Routes>
                   <Route path="/add" element={<AddingNote />}/>
                   <Route path="/notes" element={<NoteList />}/>
+                  <Route path="/sharedwithme" element={<SharedWithMe />} />
                 </Routes>
               </NoteProvider>
             </ProtectedRoute>

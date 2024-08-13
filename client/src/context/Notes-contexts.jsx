@@ -112,8 +112,22 @@ export const NoteProvider = ({ children }) => {
   }
 };
 
+const fetchSharedNotes = async (email) => {
+  if (!isLoaded || !isSignedIn) return;
+  try {
+    const response = await fetch(`http://localhost:5000/api/note/sharedwithme/${email}`);
+    if (response.ok) {
+      const sharedNotes = await response.json();
+      return sharedNotes;
+    }
+  } catch (err) {
+    console.error("Error fetching shared notes:", err);
+  }
+};
+
+
   return (
-    <NoteContext.Provider value={{ notes, addNote, updateNote, deleteNote, fetchNotes, shareNote }}>
+    <NoteContext.Provider value={{ notes, addNote, updateNote, deleteNote, fetchNotes, shareNote, fetchSharedNotes }}>
       {children}
     </NoteContext.Provider>
   );

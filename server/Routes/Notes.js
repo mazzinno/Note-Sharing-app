@@ -4,7 +4,6 @@ const Note = require('../models/Note');
 const { clerkClient } = require('@clerk/clerk-sdk-node');
 
 
-
 // Get all notes for a user
 router.get('/:userId', async (req, res) => {
     try {
@@ -56,27 +55,23 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-
+//share note
 router.post('/:id/share', async (req, res) => {
   try {
     const { id } = req.params;
     const { email } = req.body;
 
-    // Find the note
     const note = await Note.findById(id);
     if (!note) {
       return res.status(404).json({ message: 'Note not found' });
     }
 
-    // Check if the user exists in Clerk
     const users = await clerkClient.users.getUserList({ emailAddress: email });
     if (users.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     const userToShare = users[0];
-
-    // Add the user's email to the sharedWith array if not already present
     if (!note.sharedWith.includes(email)) {
       note.sharedWith.push(email);
       await note.save();
@@ -88,5 +83,19 @@ router.post('/:id/share', async (req, res) => {
     res.status(500).json({ message: 'Error sharing note' });
   }
 });
+
+// Get notes shared with a user by email
+router.get('/shared/:email', async (req, res) => {
+  try {
+    console.log('Requested Email:', req.params.email);
+    const notes = await Note.find({ sharedWith: req.params.email });
+    console.log('Found Notes:', notes);
+    res.json(notes);
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 module.exports = router;
