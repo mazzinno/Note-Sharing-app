@@ -3,10 +3,9 @@
 A full-featured note-taking application built with the MERN stack (MongoDB, Express.js, React.js, Node.js) and integrated with Clerk for authentication. This app allows users to create, edit, and share notes with others.
 
 # Authors
-
-Yasser Assou
-Youssef Amazzal
-Abdennacer Kaddouri
+-Yasser Assou
+-Youssef Amazzal
+-Abdennacer Kaddouri
 
 ## Features
 
